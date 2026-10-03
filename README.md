@@ -3,7 +3,7 @@
 The official implementation of the paper [Learning and Planning Multi-Agent Tasks via an MoE-based World Model](https://openreview.net/forum?id=fi24ry0BX5), published at [NeurIPS 2025](https://neurips.cc/Conferences/2025)
 
 <p align="center">
-  <strong><a href="https://zhaozijie2022.github.io/m3w-marl/">Project Website</a></strong> · <strong><a href="docs/m3w.pdf">Paper PDF</a></strong> · <strong><a href="https://openreview.net/forum?id=fi24ry0BX5">OpenReview</a></strong>
+  <strong><a href="https://zhaozijie2022.github.io/moewm/">Project Website</a></strong> · <strong><a href="docs/m3w.pdf">Paper PDF</a></strong> · <strong><a href="https://openreview.net/forum?id=fi24ry0BX5">OpenReview</a></strong>
 </p>
 
 ## Overview
