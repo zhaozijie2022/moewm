@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">M3W</title>
+  <desc id="desc">A mixture-of-experts world model routing several task dynamics into a planned future action.</desc>
+  <rect width="64" height="64" rx="15" fill="#123653"/>
+  <g fill="none" stroke="#69d7e8" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M15 18 27 29"/>
+    <path d="M15 46 27 35"/>
+    <path d="M37 32h12"/>
+  </g>
+  <g fill="#69d7e8" stroke="#123653" stroke-width="2.5">
+    <circle cx="14" cy="17" r="6"/>
+    <circle cx="14" cy="47" r="6"/>
+  </g>
+  <path d="M27 24h10l5 8-5 8H27l-5-8z" fill="#fff" stroke="#123653" stroke-width="2.5" stroke-linejoin="round"/>
+  <circle cx="32" cy="32" r="3.5" fill="#123653"/>
+  <path d="M51 32c4 0 5-5 5-8" fill="none" stroke="#69d7e8" stroke-width="3.5" stroke-linecap="round"/>
+  <circle cx="55" cy="23" r="5" fill="#ffcc75" stroke="#123653" stroke-width="2"/>
+</svg>

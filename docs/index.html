@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="M3W: Learning and Planning Multiple Tasks via an MoE-based World Model. NeurIPS 2025. Paper, code, and task demonstrations.">
+<meta property="og:title" content="M3W | MoE-based Multi-Task World Model">
+<meta property="og:description" content="Learning and Planning Multiple Tasks via an MoE-based World Model · NeurIPS 2025">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://zhaozijie2022.github.io/m3w-marl/images/compare.png">
+<title>M3W | Learning and Planning Multiple Tasks</title>
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<style>
+:root {
+  --ink: #263636;
+  --text: #4e5a5a;
+  --muted: #6d7777;
+  --line: #dfe4e2;
+  --soft: #f5f7f6;
+  --accent: #b54a35;
+  --max: 1040px;
+  --body-size: clamp(17px, calc(16.5px + .14vw), 18px);
+  --caption-size: clamp(14px, calc(13.5px + .14vw), 15px);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+body {
+  margin: 0;
+  color: var(--text);
+  background: #fff;
+  font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", "Helvetica Neue", Arial, sans-serif;
+  font-size: var(--body-size);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+img, video { display: block; max-width: 100%; }
+figure, p, h1, h2, h3, blockquote { margin: 0; }
+.container { width: min(var(--max), calc(100% - clamp(32px, calc(24px + 2.2vw), 48px))); margin-inline: auto; }
+.stack { display: flex; flex-direction: column; gap: 24px; }
+
+.site-header {
+  border-bottom: 1px solid var(--line);
+  background: rgba(255, 255, 255, .97);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.header-inner { min-height: 64px; padding-block: 14px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: clamp(7px, calc(-1.4px + 2.34vw), 24px); }
+.wordmark { display: inline-flex; align-items: center; gap: 9px; color: var(--ink); font-size: 22px; font-weight: 700; letter-spacing: -.04em; text-decoration: none; }
+.wordmark-logo { width: 28px; height: 28px; flex: none; }
+nav { display: flex; flex-wrap: wrap; gap: clamp(12px, calc(8px + 1.1vw), 20px) clamp(16px, calc(14px + .55vw), 20px); font-size: clamp(13px, calc(12.5px + .137vw), 14px); }
+nav a { text-decoration: none; }
+nav a:hover { color: var(--accent); }
+
+.hero { border-bottom: 1px solid var(--line); }
+.hero-inner { padding: clamp(58px, calc(49px + 2.5vw), 76px) 0 clamp(54px, calc(47px + 1.93vw), 68px); text-align: center; }
+h1 { max-width: 920px; margin: 0 auto; color: var(--ink); font-size: clamp(26px, 4vw, 44px); line-height: 1.12; letter-spacing: -.045em; }
+.project-name, .wordmark { color: #2176bd; }
+.project-name { display: inline-flex; align-items: center; gap: .22em; vertical-align: bottom; }
+.title-logo { width: 1em; height: 1em; flex: none; }
+.authors { margin-top: 22px; color: #2176bd; font-size: clamp(15px, 1.6vw, 18px); line-height: 1.8; }
+.author { display: inline-block; white-space: nowrap; font-weight: 600; }
+.author a { color: inherit; text-decoration: none; }
+.author a:hover, .author a:focus-visible { text-decoration: underline; text-underline-offset: 3px; }
+.authors sup { margin-left: 2px; color: var(--text); font-size: .65em; }
+.affiliations { margin-top: 14px; color: var(--text); font-size: clamp(13px, 1.4vw, 15px); line-height: 1.65; }
+.affiliations p { margin: 0; }
+.author-note { margin-top: 10px; color: var(--muted); font-size: 13px; }
+.hero-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 25px; }
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  white-space: nowrap;
+  padding: 9px 19px;
+  color: #fff;
+  background: #363636;
+  border: 0;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 400;
+  text-decoration: none;
+  transition: background .2s ease, transform .2s ease;
+}
+.button:hover { color: #fff; background: #202020; transform: translateY(-1px); }
+.button-icon { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.button-icon-brand { fill: currentColor; stroke: none; }
+
+.section { padding: clamp(48px, calc(43px + 1.38vw), 58px) 0; border-bottom: 1px solid var(--line); }
+.section-heading { display: flex; flex-direction: column; gap: 7px; }
+.eyebrow { color: var(--accent); font-size: 12px; letter-spacing: .08em; font-weight: 700; }
+h2 { color: var(--ink); font-size: clamp(17px, 2.2vw, 26px); line-height: 1.15; letter-spacing: -.035em; }
+h3 { color: var(--ink); font-size: clamp(16px, 1.7vw, 20px); line-height: 1.25; }
+
+.abstract-copy, .teaser-figure { width: 100%; max-width: 880px; margin-inline: auto; }
+.teaser-figure img { width: 100%; height: auto; border: 1px solid var(--line); }
+figcaption { margin-top: 10px; color: var(--text); font-size: var(--caption-size); line-height: 1.55; }
+.abstract-copy { display: flex; flex-direction: column; gap: 14px; text-align: center; }
+.abstract-copy h2 { text-align: center; }
+.abstract-copy blockquote { max-width: 850px; margin-inline: 0; align-self: flex-start; padding: 7px 16px; color: var(--ink); border-left: 3px solid var(--line); font-size: var(--body-size); line-height: 1.65; text-align: left; }
+.abstract-copy p { max-width: 880px; margin-inline: auto; font-size: var(--body-size); line-height: 1.75; text-align: left; }
+
+.method-section { padding-block: clamp(38px, calc(34.5px + .965vw), 45px); }
+.method-wrap { max-width: 1040px; display: flex; flex-direction: column; align-items: stretch; gap: 16px; }
+.method-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0; margin: 0; list-style: none; }
+.method-grid li { min-height: 0; padding: 14px 15px 12px; background: var(--soft); border: 1px solid var(--line); border-radius: 5px; display: flex; flex-direction: column; align-items: flex-start; gap: 5px; }
+.method-grid p { font-size: var(--caption-size); line-height: 1.5; }
+.module-tag { margin-top: auto; color: var(--muted); font-size: 11px; letter-spacing: .01em; }
+.math { color: var(--ink); font-family: inherit; font-style: normal; letter-spacing: 0; }
+.equation { padding: 9px 13px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px; border-left: 3px solid var(--accent); background: var(--soft); }
+.equation span, .equation small { color: var(--muted); font-size: 11px; letter-spacing: .01em; }
+.equation strong { font-size: 19px; font-weight: 500; font-style: normal; }
+.method-figure { width: 100%; }
+.method-figure img { display: block; width: 88%; margin-inline: auto; height: auto !important; aspect-ratio: auto; object-fit: contain; }
+
+.demo-group { display: flex; flex-direction: column; gap: 11px; }
+.video-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 15px; }
+.demo video, .simulation-item video, .humanoid-media video { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: #111; border-radius: 3px; }
+.demo figcaption, .simulation-item figcaption { color: var(--ink); }
+
+.simulation-section .section-heading { margin-bottom: 1px; }
+.simulation-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 15px; }
+.simulation-item { min-width: 0; }
+.humanoid-feature { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: center; gap: 32px; }
+.humanoid-copy { display: flex; flex-direction: column; gap: 12px; text-align: left; }
+.humanoid-stat { display: flex; align-items: center; gap: 12px; margin-top: 2px; }
+.humanoid-stat strong { color: var(--ink); font-size: 31px; line-height: 1; }
+.humanoid-stat strong span { color: var(--accent); font-size: .6em; }
+.humanoid-stat > span { color: var(--muted); font-size: 12px; line-height: 1.25; text-align: left; }
+.small-note { color: var(--muted); font-size: 12px; line-height: 1.45; }
+
+pre { margin: 0; overflow-x: auto; padding: 18px 20px; color: var(--ink); background: var(--soft); border: 1px solid var(--line); font: 13px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: pre; }
+.citation-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
+.citation-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.copy-citation { display: inline-flex; align-items: center; gap: 6px; padding: 6px 0; border: 0; background: none; color: var(--muted); font: inherit; font-size: 13px; cursor: pointer; }
+.copy-citation:hover { color: var(--ink); }
+.copy-citation .button-icon { width: 16px; height: 16px; }
+.copy-citation:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.copy-citation:disabled { cursor: wait; opacity: .7; }
+.site-footer { padding: 24px 0 34px; }
+.footer-inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 18px; color: var(--muted); font-size: 13px; }
+.footer-inner span { color: var(--ink); font-weight: 700; }
+.footer-inner a { text-decoration: none; }
+  
+.venue { display: inline-block; margin-bottom: 20px; padding: 4px 14px; border-radius: 20px; background: #edf5fb; color: #216ba7; font-size: 14px; font-weight: 600; letter-spacing: .04em; }
+.project-subtitle { margin-top: 18px; color: var(--muted); }
+#demos > .container { max-width: 1040px; }
+.demo-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 22px 16px; }
+.demo-grid img { width: 100%; height: auto; aspect-ratio: 4/3; border-radius: 4px; background: var(--soft); }
+.demo-grid figcaption { text-align: center; margin-top: 8px; }
+.result-summary { display: flex; justify-content: center; gap: 70px; padding: 12px 0; text-align: center; }
+.result-summary strong { display: block; color: #2176bd; font-size: 34px; line-height: 1.25; }
+.result-summary span { font-size: 14px; }
+#results > .container > figure > img { display: block; width: 75%; height: auto; margin-inline: auto; }
+.acknowledgement a { color: #2176bd; text-underline-offset: 3px; }
+.skip-link { position: absolute; left: 16px; top: -70px; padding: 8px 14px; background: white; z-index: 30; }
+.skip-link:focus { top: 8px; }
+a:focus-visible, button:focus-visible { outline: 2px solid #2176bd; outline-offset: 4px; }
+@media (max-width: 1000px) {
+ .demo-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 700px) {
+ .method-grid { grid-template-columns: 1fr; }
+ .demo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+ .header-inner { justify-content: center; }
+ nav { justify-content: center; }
+ html { scroll-padding-top: 115px; }
+ .result-summary { gap: 32px; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .button { transition: none; } }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#abstract">Skip to content</a>
+<header class="site-header"><div class="container header-inner">
+<a class="wordmark" href="#top"><img class="wordmark-logo" src="images/favicon.svg" alt="" width="28" height="28">M3W</a>
+<nav aria-label="Main navigation"><a href="#abstract">Abstract</a><a href="#method">Method</a><a href="#results">Results</a><a href="#demos">Demos</a><a href="#bibtex">Citation</a></nav>
+</div></header>
+<main id="top">
+<section class="hero"><div class="container hero-inner">
+<p class="venue">NeurIPS 2025</p>
+<h1><span class="project-name"><img class="title-logo" src="images/favicon.svg" alt="" width="44" height="44">M3W</span>: Learning and Planning Multiple Tasks via an MoE-based World Model</h1>
+<p class="project-subtitle"><strong>M3W</strong> · MoE-based Multi-Task World Model</p>
+<div class="authors" aria-label="Authors">
+<span class="author"><a href="https://zhaozijie2022.github.io/" target="_blank" rel="noopener">Zijie Zhao</a><sup>1,2</sup></span>,
+<span class="author"><a href="https://openreview.net/profile?id=~Zhongyue_Zhao1" target="_blank" rel="noopener">Zhongyue Zhao</a><sup>2</sup></span>,
+<span class="author"><a href="https://scholar.google.com/citations?user=16ELLxgAAAAJ" target="_blank" rel="noopener">Kaixuan Xu</a><sup>2</sup></span>,
+<span class="author"><a href="https://fyqqyf.github.io/" target="_blank" rel="noopener">Yuqian Fu</a><sup>1,2</sup></span>,
+<span class="author"><a href="https://scholar.google.com/citations?user=yDdfap0AAAAJ" target="_blank" rel="noopener">Jiajun Chai</a><sup>3</sup></span>,
+<span class="author"><a href="https://scholar.google.com/citations?user=AMnkOiIAAAAJ" target="_blank" rel="noopener">Yuanheng Zhu</a><sup>2,1,†</sup></span>,
+<span class="author"><a href="https://scholar.google.com/citations?user=RxvYlNQAAAAJ" target="_blank" rel="noopener">Dongbin Zhao</a><sup>2,1,†</sup></span>
+</div>
+<div class="affiliations"><p><sup>1</sup> School of Artificial Intelligence, University of Chinese Academy of Sciences</p><p><sup>2</sup> Institute of Automation, Chinese Academy of Sciences &nbsp; <sup>3</sup> Meituan</p></div>
+<p class="author-note"><sup>†</sup> Corresponding authors.</p>
+<div class="hero-actions">
+          <a class="button" href="https://github.com/zhaozijie2022/m3w-marl" target="_blank" rel="noopener">
+            <svg class="button-icon button-icon-brand" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+            <span>Code</span>
+          </a>
+          <a class="button" href="m3w.pdf">
+            <svg class="button-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 2h10l4 4v16H5z"/><path d="M15 2v5h4"/><path d="M8 18c3-4 5-9 4-10-2-1-1 5 2 7 4 2 4-2 0-1-4 0-8 2-7 4 0 1 1 0 1 0Z" stroke-width="1.2"/></svg>
+            <span>PDF</span>
+          </a>
+          <a class="button" href="https://openreview.net/forum?id=fi24ry0BX5" target="_blank" rel="noopener">
+            <svg class="button-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <span>OpenReview</span>
+          </a>
+        </div>
+</div></section>
+<section id="abstract" class="section"><div class="container stack">
+<div class="abstract-copy"><h2>Abstract</h2>
+<blockquote>Learn shared task dynamics. Plan task-specific actions.</blockquote>
+<p>Multi-task reinforcement learning aims to develop a single model capable of solving a diverse set of tasks. Existing methods often struggle with substantial variation in optimal policies across tasks. In contrast, many tasks exhibit <strong>bounded similarity</strong> in their underlying dynamics: high similarity within related task groups, but substantial differences between unrelated groups. We present <strong>M3W</strong>, which applies mixture-of-experts to a world model for both learning and planning. A SoftMoE dynamics model and a SparseMoE reward predictor support knowledge reuse across similar tasks while reducing conflicts across dissimilar tasks. An MPPI planner evaluates and optimizes actions through predicted rollouts. Experiments on <strong>14 Bi-DexHands tasks</strong> and <strong>24 MuJoCo tasks</strong> demonstrate improved performance, sample efficiency, and multi-task adaptability over policy-centric baselines.</p>
+</div>
+<figure class="teaser-figure"><img src="images/framework.svg" alt="M3W framework connecting multiple tasks, an MoE world model, and planning"><figcaption><strong>M3W at a glance.</strong> A modular world model captures task dynamics and rewards, supporting planning across diverse tasks.</figcaption></figure>
+</div></section>
+<section id="method" class="section method-section"><div class="container method-wrap">
+<div class="section-heading"><p class="eyebrow">Method</p><h2>One world model, multiple tasks.</h2><p>M3W combines modular prediction with model predictive path integral (MPPI) planning.</p></div>
+<ol class="method-grid"><li><h3>Learn dynamics</h3><p>SoftMoE models latent dynamics, reusing knowledge within groups of related tasks.</p></li><li><h3>Predict rewards</h3><p>SparseMoE predicts task rewards with selective expert activation to reduce interference.</p></li><li><h3>Plan together</h3><p>An MPPI planner optimizes joint actions using imagined world-model rollouts.</p></li></ol>
+<figure class="method-figure"><img src="images/method.svg" alt="Detailed M3W architecture with SoftMoE dynamics, SparseMoE reward prediction, and planning" loading="lazy"><figcaption><strong>Learning and planning.</strong> Task-conditioned predictions support action selection across tasks with different dynamics and objectives.</figcaption></figure>
+</div></section>
+<section id="results" class="section"><div class="container stack">
+<div class="section-heading"><p class="eyebrow">Results</p><h2>Multi-task performance across manipulation and locomotion.</h2><p>M3W is evaluated on Bi-DexHands and MuJoCo against policy-centric baselines.</p></div>
+<figure><img src="images/compare.png" alt="Performance comparison between M3W and reinforcement learning baselines on Bi-DexHands and MuJoCo" width="1200" height="504" loading="lazy"><figcaption><strong>Multi-task performance.</strong> Learning curves for representative tasks. See the paper for metrics, evaluation protocols, and full experimental results.</figcaption></figure>
+</div></section>
+<section id="demos" class="section"><div class="container stack">
+<div class="section-heading"><p class="eyebrow">Task demonstrations</p><h2>Behaviors learned by M3W.</h2><p>Representative rollouts from dexterous manipulation and mujoco locomotion tasks.</p></div>
+<div class="demo-group"><h3>Bi-DexHands</h3><div class="demo-grid"><figure><img src="demos/dex/over.gif" alt="Hand Over task rollout" width="320" height="240" loading="lazy"><figcaption>Hand Over</figcaption></figure><figure><img src="demos/dex/catch-abreast.gif" alt="Catch Abreast task rollout" width="320" height="240" loading="lazy"><figcaption>Catch Abreast</figcaption></figure><figure><img src="demos/dex/catch-underarm.gif" alt="Catch Underarm task rollout" width="320" height="240" loading="lazy"><figcaption>Catch Underarm</figcaption></figure><figure><img src="demos/dex/lift-underarm.gif" alt="Lift Underarm task rollout" width="320" height="240" loading="lazy"><figcaption>Lift Underarm</figcaption></figure><figure><img src="demos/dex/open-outward.gif" alt="Open Outward task rollout" width="320" height="240" loading="lazy"><figcaption>Open Outward</figcaption></figure><figure><img src="demos/dex/scissors.gif" alt="Scissors task rollout" width="320" height="240" loading="lazy"><figcaption>Scissors</figcaption></figure></div></div>
+<div class="demo-group"><h3>MuJoCo</h3><div class="demo-grid"><figure><img src="demos/mujoco/crf.gif" alt="Cheetah Run Front task rollout" width="320" height="240" loading="lazy"><figcaption>Cheetah Run Front</figcaption></figure><figure><img src="demos/mujoco/crun.gif" alt="Cheetah Run task rollout" width="320" height="240" loading="lazy"><figcaption>Cheetah Run</figcaption></figure><figure><img src="demos/mujoco/hop.gif" alt="Hopper Hop task rollout" width="320" height="240" loading="lazy"><figcaption>Hopper Hop</figcaption></figure><figure><img src="demos/mujoco/runbwd.gif" alt="Cheetah Run Backward task rollout" width="320" height="240" loading="lazy"><figcaption>Cheetah Run Backward</figcaption></figure><figure><img src="demos/mujoco/rh.gif" alt="Reacher task rollout" width="320" height="240" loading="lazy"><figcaption>Reacher</figcaption></figure><figure><img src="demos/mujoco/wkst.gif" alt="Walker Stand task rollout" width="320" height="240" loading="lazy"><figcaption>Walker Stand</figcaption></figure></div></div>
+</div></section>
+<section id="bibtex" class="section"><div class="container stack">
+<div class="citation-heading"><div class="section-heading"><p class="eyebrow">Citation</p><h2>BibTeX</h2></div><div class="citation-actions"><span id="copy-status" class="small-note" role="status" aria-live="polite"></span><button class="copy-citation" id="copy-citation" type="button" aria-controls="citation-code">
+              <svg class="button-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              <span>Copy BibTeX</span>
+            </button></div></div>
+<pre><code id="citation-code">@inproceedings{zhao2025m3w,
+  title     = {Learning and Planning Multi-Agent Tasks via an MoE-based World Model},
+  author    = {Zhao, Zijie and Zhao, Zhongyue and Xu, Kaixuan and Fu, Yuqian and Chai, Jiajun and Zhu, Yuanheng and Zhao, Dongbin},
+  booktitle = {Advances in Neural Information Processing Systems},
+  year      = {2025},
+  url       = {https://openreview.net/forum?id=fi24ry0BX5}
+}</code></pre>
+</div></section>
+</main>
+<footer class="site-footer"><div class="container footer-inner"><span>M3W · NeurIPS 2025</span><a href="#top">Back to top ↑</a></div></footer>
+<script>
+    const copyButton = document.getElementById('copy-citation');
+    const citationCode = document.getElementById('citation-code');
+    const copyStatus = document.getElementById('copy-status');
+
+    function copyWithFallback(text) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.readOnly = true;
+      textarea.style.cssText = 'position:fixed;left:-9999px;top:0;';
+      document.body.appendChild(textarea);
+      try {
+        textarea.select();
+        textarea.setSelectionRange(0, text.length);
+        return document.execCommand('copy');
+      } catch {
+        return false;
+      } finally {
+        textarea.remove();
+      }
+    }
+
+    copyButton.addEventListener('click', async () => {
+      const text = citationCode.textContent.trim();
+      copyButton.disabled = true;
+      copyStatus.textContent = '';
+      let copied = false;
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+          copied = true;
+        }
+      } catch {
+        // Try the local-file / older-browser fallback below.
+      }
+      if (!copied) copied = copyWithFallback(text);
+      copyButton.disabled = false;
+      copyButton.focus({ preventScroll: true });
+      if (copied) {
+        copyStatus.textContent = 'Copied!';
+      } else {
+        const selection = window.getSelection();
+        const range = document.createRange();
+        range.selectNodeContents(citationCode);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        copyStatus.textContent = 'Copy unavailable. Press Ctrl+C or ⌘C to copy the selected citation.';
+      }
+    });
+  </script>
+</body></html>

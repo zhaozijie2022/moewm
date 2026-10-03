@@ -1,17 +1,21 @@
 # M3W: MoE-based Multi-Task World Model (NeurIPS'25)
 
-The official implementation of the paper [Learning and Planning Multi-Agent Tasks via an MoE-based World Model](https://openreview.net/forum?id=fi24ry0BX5), which published on [NeurIPS 2025](https://neurips.cc/Conferences/2025)
+The official implementation of the paper [Learning and Planning Multi-Agent Tasks via an MoE-based World Model](https://openreview.net/forum?id=fi24ry0BX5), published at [NeurIPS 2025](https://neurips.cc/Conferences/2025)
+
+<p align="center">
+  <strong><a href="https://zhaozijie2022.github.io/m3w-marl/">Project Website</a></strong> · <strong><a href="docs/m3w.pdf">Paper PDF</a></strong> · <strong><a href="https://openreview.net/forum?id=fi24ry0BX5">OpenReview</a></strong>
+</p>
 
 ## Overview
 ---
 **M3W** is a Mixture-of-Experts world model framework for multi-task multi-agent reinforcement learning.
 
-![](assets/images_folder/framework.svg)
+![](docs/images/framework.svg)
 
 
 M3W leverages the idea of **bounded similarity** in task dynamics, combining **SoftMoE dynamics learning** and **SparseMoE reward prediction** within a world model. By planning directly on predicted rollouts with a **multi-agent MPPI planner**, it enables efficient knowledge reuse, conflict avoidance, and scalable multi-task adaptability, surpassing policy-centric approaches.
 
-![](assets/images_folder/method.svg)
+![](docs/images/method.svg)
 
 <!-- ### 📑 Table of Contents
 1. [Installation](#installation)  
@@ -42,33 +46,29 @@ We extend Bi-DexHands to multi-task settings using multiprocessing, which makes 
 
 M3W achieves superior performance on both Bi-DexHands and MA-MuJoCo, showing superior sample efficiency and multi-task adaptability compared to policy-centric baselines.
 
-![](assets/images_folder/compare.png)
+![](docs/images/compare.png)
 
 ## 🎥 Demos
 Here we showcase several representative task rollouts demonstrating the diverse cooperative behaviors learned by M3W.
 
 #### Bi-DexHands
 <p align="center">
-  <img src="assets/gifs/dex/over.gif" alt="Over" width="20%"/>
-  <img src="assets/gifs/dex/catch-abreast.gif" alt="Catch Abreast" width="20%"/>
-  <img src="assets/gifs/dex/catch-underarm.gif" alt="Catch Underarm" width="20%"/>
-  <img src="assets/gifs/dex/over2underarm.gif" alt="Over2Underarm" width="20%"/>
+  <img src="docs/demos/dex/over.gif" alt="Over" width="16%"/>
+  <img src="docs/demos/dex/catch-abreast.gif" alt="Catch Abreast" width="16%"/>
+  <img src="docs/demos/dex/catch-underarm.gif" alt="Catch Underarm" width="16%"/>
+  <img src="docs/demos/dex/lift-underarm.gif" alt="Lift Underarm" width="16%"/>
+  <img src="docs/demos/dex/open-outward.gif" alt="Open Outward" width="16%"/>
+  <img src="docs/demos/dex/scissors.gif" alt="Scissors" width="16%"/>
 </p>
 
-</p>
+#### MA-MuJoCo
 <p align="center">
-  <img src="assets/gifs/dex/lift-underarm.gif" alt="Lift Underarm" width="20%"/>
-  <img src="assets/gifs/dex/open-outward.gif" alt="Open Outward" width="20%"/>
-  <img src="assets/gifs/dex/pen.gif" alt="Pen" width="20%"/>
-  <img src="assets/gifs/dex/scissors.gif" alt="Scissors" width="20%"/>
-</p>
-
-#### MA-Mujoco
-<p align="center">
-  <img src="assets/gifs/mujoco/crf.gif" alt="Cheetah Run Front" width="20%"/>
-  <img src="assets/gifs/mujoco/crun.gif" alt="Cheetah Run" width="20%"/>
-  <img src="assets/gifs/mujoco/hop.gif" alt="Hopper Hop" width="20%"/>
-  <img src="assets/gifs/mujoco/runbwd.gif" alt="Cheetah Run Backward" width="20%"/>
+  <img src="docs/demos/mujoco/crf.gif" alt="Cheetah Run Front" width="16%"/>
+  <img src="docs/demos/mujoco/crun.gif" alt="Cheetah Run" width="16%"/>
+  <img src="docs/demos/mujoco/hop.gif" alt="Hopper Hop" width="16%"/>
+  <img src="docs/demos/mujoco/runbwd.gif" alt="Cheetah Run Backward" width="16%"/>
+  <img src="docs/demos/mujoco/rh.gif" alt="Reacher" width="16%"/>
+  <img src="docs/demos/mujoco/wkst.gif" alt="Walker Stand" width="16%"/>
 </p>
 
 ## 🙏 Acknowledgement & 📜 Citation
@@ -78,9 +78,9 @@ If you find our research helpful and would like to reference it in your work, pl
 
 ```bibtex
 @inproceedings{zhao2025m3w,
-  title     = {Learning and Planning Multi-Agent Tasks via a MoE-based World Model},
+  title     = {Learning and Planning Multi-Agent Tasks via an MoE-based World Model},
   author    = {Zhao, Zijie and Zhao, Zhongyue and Xu, Kaixuan and Fu, Yuqian and Chai, Jiajun and Zhu, Yuanheng and Zhao, Dongbin},
-  booktitle = {},
+  booktitle = {Advances in Neural Information Processing Systems},
   year      = {2025}
 }
 ```
